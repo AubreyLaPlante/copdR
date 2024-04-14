@@ -11,7 +11,7 @@ file2vect <- function(dataDir,dFolder){
      #generate a vector of all backslip data names
      #path <- as.character(readline(prompt = "Enter backslip folder name:   "))
      #bs.names <- list.files(path = paste0(getwd(),"/",path), pattern = ".mat")
-     bs.names <- list.files(path = file.path(dataDir,folder_name), pattern = ".mat")
+     bs.names <- list.files(path = file.path(dataDir,dFolder), pattern = ".mat")
 
      if(length(list.files(path = dataDir, pattern = ".mat")) == 0){
           stop("ERROR: Folder not found. Check that the folder is in your working directory, and that the folder name is spelled correctly.")
@@ -28,9 +28,9 @@ file2vect <- function(dataDir,dFolder){
 #' Make sure each file name starts with a maximum 4-letter/number identifier.
 #' @importFrom utils setTxtProgressBar txtProgressBar
 #' @param dataDir The path to the directory containing a folder of .mat files.
-#' @param folder_name A folder in your working directory that contains all
+#' @param dFolder A folder in your working directory that contains all
 #'   the .mat files. Name should be in quotations, i.e. "folder_name".
-#' @param bs_names A vector with the names of the backslip files.
+#' @param nameVec A vector with the names of the backslip files.
 #' @return A list of three matrices including lateral, vertical and total offset.
 #' @export
 #'
@@ -38,8 +38,8 @@ file2vect <- function(dataDir,dFolder){
 #'
 
 
-mat2list <- function(dataDir, folder_name, bs_names){
-     bs.init <- R.matlab::readMat(file.path(dataDir, folder_name, bs_names[1]))
+mat2list <- function(dataDir, dFolder, nameVec){
+     bs.init <- R.matlab::readMat(file.path(dataDir, dFolder, nameVec[1]))
      #initialize a matrix from the first .mat data
      h_x = t(stats::na.omit(bs.init$XCORDATAH))
      h_y = t(stats::na.omit(bs.init$XCOR.SUMH))
@@ -58,7 +58,7 @@ mat2list <- function(dataDir, folder_name, bs_names){
 
      #progress bar
 
-     n_iter <- length(bs_names)-1 # Number of iterations of the loop
+     n_iter <- length(nameVec)-1 # Number of iterations of the loop
 
      # Initializes the progress bar
      pb <- utils::txtProgressBar(min = 0,      # Minimum value of the progress bar
@@ -67,9 +67,9 @@ mat2list <- function(dataDir, folder_name, bs_names){
                           width = 50,   # Progress bar width. Defaults to getOption("width")
                           char = "=")   # Character used to create the bar
 
-     suppressMessages(for(i in 2:length(bs_names)){
+     suppressMessages(for(i in 2:length(nameVec)){
 
-          pathname <- file.path(dataDir, folder_name, bs_names[i])
+          pathname <- file.path(dataDir, dFolder, nameVec[i])
           bs.data <- R.matlab::readMat(pathname)
 
           h_x = t(stats::na.omit(bs.data$XCORDATAH))
@@ -95,9 +95,9 @@ mat2list <- function(dataDir, folder_name, bs_names){
      })
      close(pb)
      #renaming
-     colnames(lateral)[2:(length(bs_names)+1)] <- substr(bs_names,1,4)
-     colnames(vertical)[2:(length(bs_names)+1)] <- substr(bs_names,1,4)
-     colnames(total)[2:(length(bs_names)+1)] <- substr(bs_names,1,4)
+     colnames(lateral)[2:(length(nameVec)+1)] <- substr(nameVec,1,4)
+     colnames(vertical)[2:(length(nameVec)+1)] <- substr(nameVec,1,4)
+     colnames(total)[2:(length(nameVec)+1)] <- substr(nameVec,1,4)
      return(list(backslip_lat = lateral,
                  backslip_vert = vertical,
                  backslip_tot = total))

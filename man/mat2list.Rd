@@ -4,15 +4,15 @@
 \alias{mat2list}
 \title{Combine .mat file data}
 \usage{
-mat2list(dataDir, folder_name, bs_names)
+mat2list(dataDir, dFolder, nameVec)
 }
 \arguments{
 \item{dataDir}{The path to the directory containing a folder of .mat files.}
 
-\item{folder_name}{A folder in your working directory that contains all
+\item{dFolder}{A folder in your working directory that contains all
 the .mat files. Name should be in quotations, i.e. "folder_name".}
 
-\item{bs_names}{A vector with the names of the backslip files.}
+\item{nameVec}{A vector with the names of the backslip files.}
 }
 \value{
 A list of three matrices including lateral, vertical and total offset.

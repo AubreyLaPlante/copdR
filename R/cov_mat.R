@@ -26,6 +26,7 @@ filter_covREF <- function(backslip_ref,offset_ID,offset_type,COV_values,backslip
      #initalize COV_matrix reference with offset ID column
      COV_mat <- backslip_ref[offset_ID]
      backslip_ref = as.data.frame(backslip_ref)
+     COV_lat <- COV_vert <- COV_tot <- NULL
 
      if(offset_type == "lateral"){
           #complete loop to create filtered vectors and bind to offset_ID

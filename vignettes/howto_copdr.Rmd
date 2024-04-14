@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 library(copdr)
 ```
 
-# 1. What are COPDs and why are they used for earthquake offsets and magnitudes?
+# 1. What are COPDs and why are they used to analyze earthquakes?
 
 First of all, what are cumulative offset probability distribution (COPD)
 functions, and how are they used in earthquake offset analyses? In

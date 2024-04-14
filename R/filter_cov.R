@@ -1,7 +1,7 @@
-#' Filter offset data by COV values
+#' Filter offset data by COV values in COV matrix
 #'
 #'
-#' Combine all offset data from the mat files.
+#' Combine all offset data from the selected mat files.
 #'
 #' @importFrom dplyr select bind_cols
 #' @importFrom tidyselect contains
