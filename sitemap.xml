@@ -31,6 +31,9 @@
     <loc>/reference/data.clip.html</loc>
   </url>
   <url>
+    <loc>/reference/file2vect.html</loc>
+  </url>
+  <url>
     <loc>/reference/filter_covDAT.html</loc>
   </url>
   <url>
@@ -40,16 +43,13 @@
     <loc>/reference/index.html</loc>
   </url>
   <url>
-    <loc>/reference/list.mat.html</loc>
+    <loc>/reference/mat2list.html</loc>
   </url>
   <url>
-    <loc>/reference/matrix.mat.html</loc>
+    <loc>/reference/plotCOPD.html</loc>
   </url>
   <url>
-    <loc>/reference/plotMat.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plotMatSum.html</loc>
+    <loc>/reference/plotPDF.html</loc>
   </url>
   <url>
     <loc>/reference/simplify4plot.html</loc>
