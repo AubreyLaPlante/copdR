@@ -92,6 +92,7 @@ data.clip <- function(data_table, offset_type, xmin, xmax){
 #' @param xmax The maximum x value. Values can be negative or positive but must be greater than xmin.
 #' @param ymin The minimum y value. Values can be negative or positive but must be less than ymax.
 #' @param ymax The maximum y value. Values can be negative or positive but must be greater than ymin.
+#' @param simplify Must be "Y" or "N". If yes, the data table is simplified using the simplify4plot function.
 #' @return A plot produced by ggplot
 #' @export
 #'
@@ -99,7 +100,10 @@ data.clip <- function(data_table, offset_type, xmin, xmax){
 #'
 
 
-plotMat <- function(data_table, offset_type, xmin = -10, xmax = 10, ymin = -1, ymax = 1){
+plotPDF <- function(data_table, offset_type, xmin = -10, xmax = 10, ymin = -1, ymax = 1, simplify = "Y"){
+     if(simplify == "Y"){
+          data_table <- simplify4plot(data_table,offset_type)
+     }
      if(offset_type == "lateral"){
           plot <- ggplot2::ggplot(mapping = aes(x=data_table$h_x,
                                                 y = data_table$value,
@@ -107,7 +111,7 @@ plotMat <- function(data_table, offset_type, xmin = -10, xmax = 10, ymin = -1, y
                stat_align()+
                xlim(xmin,xmax)+
                ylim(ymin,ymax)+
-               labs(title = "Lateral Displacement")
+               labs(title = "Lateral PDFs", x = "Lateral Offset (m)", y = "Probability")
      }
      if(offset_type == "vertical"){
           plot <- ggplot2::ggplot(mapping = aes(x=data_table$z_x,
@@ -116,7 +120,7 @@ plotMat <- function(data_table, offset_type, xmin = -10, xmax = 10, ymin = -1, y
                stat_align()+
                xlim(xmin,xmax)+
                ylim(ymin,ymax)+
-               labs(title = "Vertical Displacement")
+               labs(title = "Vertical PDFs", x = "Vertical Offset (m)", y = "Probability")
 
      }
      if(offset_type == "total"){
@@ -126,7 +130,7 @@ plotMat <- function(data_table, offset_type, xmin = -10, xmax = 10, ymin = -1, y
                stat_align()+
                xlim(xmin,xmax)+
                ylim(ymin,ymax)+
-               labs(title = "Total Displacement")
+               labs(title = "Total PDFs", x = "Total Offset (m)", y = "Probability")
      }
      return(plot)
 }
@@ -152,7 +156,7 @@ plotMat <- function(data_table, offset_type, xmin = -10, xmax = 10, ymin = -1, y
 #'
 
 
-plotMatSum <- function(data_table, offset_type, xmin = -10, xmax = 10){
+plotCOPD <- function(data_table, offset_type, xmin = -10, xmax = 10){
      if(offset_type == "lateral"){
           plot <- ggplot2::ggplot(mapping = aes(x= data_table$h_x,
                                                 y= data_table$y))+

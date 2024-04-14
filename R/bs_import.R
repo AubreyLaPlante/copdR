@@ -7,7 +7,7 @@
 #'
 
 
-list.mat <- function(dataDir,dFolder){
+file2vect <- function(dataDir,dFolder){
      #generate a vector of all backslip data names
      #path <- as.character(readline(prompt = "Enter backslip folder name:   "))
      #bs.names <- list.files(path = paste0(getwd(),"/",path), pattern = ".mat")
@@ -38,7 +38,7 @@ list.mat <- function(dataDir,dFolder){
 #'
 
 
-matrix.mat <- function(dataDir, folder_name, bs_names){
+mat2list <- function(dataDir, folder_name, bs_names){
      bs.init <- R.matlab::readMat(file.path(dataDir, folder_name, bs_names[1]))
      #initialize a matrix from the first .mat data
      h_x = t(stats::na.omit(bs.init$XCORDATAH))
