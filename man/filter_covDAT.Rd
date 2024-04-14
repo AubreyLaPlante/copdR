@@ -2,7 +2,7 @@
 % Please edit documentation in R/filter_cov.R
 \name{filter_covDAT}
 \alias{filter_covDAT}
-\title{Filter offset data by COV values}
+\title{Filter offset data by COV values in COV matrix}
 \usage{
 filter_covDAT(
   backslip_ref,
@@ -35,5 +35,5 @@ A filtered list of matrices. Each matrix will have a set of PDFs filtered by COV
 as referenced in the COV_mat file.
 }
 \description{
-Combine all offset data from the mat files.
+Combine all offset data from the selected mat files.
 }

@@ -18,12 +18,12 @@ Imports:
     reshape,
     stats,
     tidyselect,
-    utils;
+    utils,
 Suggests: 
     knitr,
     rmarkdown,
     readr,
-    testthat (>= 3.0.0);
+    testthat (>= 3.0.0),
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Depends: 
