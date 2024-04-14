@@ -1,6 +1,6 @@
 Package: copdr
 Title: Cumulative Offset Probability Distribution Functions in R
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: 
     person("Aubrey", "LaPlante", , "aal382@nau.edu", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
