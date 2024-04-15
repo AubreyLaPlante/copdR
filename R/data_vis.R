@@ -10,7 +10,7 @@
 #' @param offset_type Input can be "lateral", "vertical" or "total". Any other input
 #' will result in an error.
 #' @return A data frame with 3 columns including x values, all backslip names,
-#' and lateral values.
+#' and offset values.
 #' @export
 #'
 #'
@@ -163,7 +163,7 @@ plotCOPD <- function(data_table, offset_type, maxCOV, xmin = -10, xmax = 10){
                                                 y= data_table$y))+
                stat_align()+
                xlim(xmin,xmax)+
-               labs(title = paste("Lateral Offset COPDs;", "COV <",maxCOV),
+               labs(title = paste("Lateral COPDs;", "COV <",maxCOV),
                     x = "Lateral Offset (m)", y = "Cumulative Probability")
      }
      if(offset_type == "vertical"){
@@ -171,7 +171,7 @@ plotCOPD <- function(data_table, offset_type, maxCOV, xmin = -10, xmax = 10){
                                                 y = data_table$y))+
                stat_align()+
                xlim(xmin,xmax)+
-               labs(title = paste("Vertical Offset COPDs;", "COV <",maxCOV),
+               labs(title = paste("Vertical COPDs;", "COV <",maxCOV),
                     x = "Vertical Offset (m)", y = "Cumulative Probability")
 
      }
@@ -180,7 +180,7 @@ plotCOPD <- function(data_table, offset_type, maxCOV, xmin = -10, xmax = 10){
                                                 y = data_table$y))+
                stat_align()+
                xlim(xmin,xmax)+
-               labs(title = paste("Total Offset COPDs;", "COV <",maxCOV),
+               labs(title = paste("Total COPDs;", "COV <",maxCOV),
                     x = "Total Offset (m)", y = "Cumulative Probability")
      }
      return(plot)

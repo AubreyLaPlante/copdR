@@ -15,7 +15,7 @@ will result in an error.}
 }
 \value{
 A data frame with 3 columns including x values, all backslip names,
-and lateral values.
+and offset values.
 }
 \description{
 Melt backslip data table into a three column data frame that can be
