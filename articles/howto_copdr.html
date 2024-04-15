@@ -203,6 +203,7 @@ displacement we can use scaling relationships (Wells and Coppersmith,
 1994) to determine that this amount of average displacement corresponds
 to a rupture length of ~136 km and an earthquake magnitude of Mw ~7.7.
 COPDs can be really useful to estimate future seismic hazards!</p>
+<hr>
 </div>
 <div class="section level2">
 <h2 id="introduction-to-cumulative-offset-probability-distribution-functions-in-r-copdr">2. Introduction to Cumulative Offset Probability Distribution
@@ -222,7 +223,9 @@ but stay with me.</p>
 <p>First, you need to make sure that the full PDF dataset and its
 metadata CSV is in a folder in your working directory. The default
 dataset is pre-coded for your convenience.</p>
-<p><span class="math inline">\(User-defined\)</span> <span class="math inline">\(inputs\)</span></p>
+<div class="section level4">
+<h4 id="a--user-defined-inputs">a. <em>User-defined inputs</em><a class="anchor" aria-label="anchor" href="#a--user-defined-inputs"></a>
+</h4>
 <p>There are three global variables that the user can set:</p>
 <ol style="list-style-type: decimal">
 <li>directory - this is where all your data are located.<br>
@@ -241,7 +244,10 @@ before loading it in.</li>
 <code class="sourceCode R"><span><span class="va">directory</span> <span class="op">&lt;&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"copdr"</span><span class="op">)</span></span>
 <span><span class="va">folder_name</span> <span class="op">&lt;&lt;-</span> <span class="st">"example_mat"</span></span>
 <span><span class="va">csv_name</span> <span class="op">&lt;&lt;-</span> <span class="st">"example.csv"</span></span></code></pre></div>
-<p><span class="math inline">\(Importing\)</span> <span class="math inline">\(the\)</span> <span class="math inline">\(data\)</span></p>
+</div>
+<div class="section level4">
+<h4 id="b--importing-the-data">b. <em>Importing the data</em><a class="anchor" aria-label="anchor" href="#b--importing-the-data"></a>
+</h4>
 <p>This first part of the code does the following:</p>
 <ol style="list-style-type: decimal">
 <li>file2vect() takes the folder_name set above (i.e. ‘example_mat’) in
@@ -260,6 +266,8 @@ metadata should be formatted.</li>
 <span><span class="va">backslip_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mat2list.html">mat2list</a></span><span class="op">(</span><span class="va">directory</span>,<span class="va">folder_name</span>,<span class="va">backslip_names</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">backslip_csv</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">directory</span>,<span class="va">csv_name</span><span class="op">)</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<hr>
+</div>
 </div>
 </div>
 <div class="section level2">
@@ -276,14 +284,12 @@ larger than the extent of the data. You should not see any negative
 probabilities. For now, ignore the sign of the lateral and vertical
 offset magnitudes.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plotPDF.html">plotPDF</a></span><span class="op">(</span><span class="va">backslip_data</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="st">"lateral"</span>, simplify <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">gridExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html" class="external-link">grid.arrange</a></span><span class="op">(</span><span class="fu"><a href="../reference/plotPDF.html">plotPDF</a></span><span class="op">(</span><span class="va">backslip_data</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="st">"lateral"</span>, simplify <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span>,</span>
+<span>                        <span class="fu"><a href="../reference/plotPDF.html">plotPDF</a></span><span class="op">(</span><span class="va">backslip_data</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>,<span class="st">"vertical"</span>,simplify <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span>,</span>
+<span>                        <span class="fu"><a href="../reference/plotPDF.html">plotPDF</a></span><span class="op">(</span><span class="va">backslip_data</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>,<span class="st">"total"</span>, simplify <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span>,</span>
+<span>                        nrow <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>                        ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="howto_copdr_files/figure-html/plot-raw-1.png" width="700"></p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plotPDF.html">plotPDF</a></span><span class="op">(</span><span class="va">backslip_data</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>,<span class="st">"vertical"</span>,simplify <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="howto_copdr_files/figure-html/plot-raw-2.png" width="700"></p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plotPDF.html">plotPDF</a></span><span class="op">(</span><span class="va">backslip_data</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>,<span class="st">"total"</span>, simplify <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="howto_copdr_files/figure-html/plot-raw-3.png" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="clip-raw-data-and-plot">3.2 Clip raw data and plot<a class="anchor" aria-label="anchor" href="#clip-raw-data-and-plot"></a>
@@ -297,34 +303,18 @@ maximum and minimum values. These extra zeros are unnecessary and may
 make it difficult when combining the datasets, if each PDF has different
 lengths of probability vectors. So, we will uniformly clip the PDFs to
 remove anything unnecessary for future analysis.</p>
-<p><span class="math inline">\(User-defined\)</span> <span class="math inline">\(inputs\)</span></p>
+<div class="section level4">
+<h4 id="a--user-defined-inputs-1">a. <em>User-defined inputs</em><a class="anchor" aria-label="anchor" href="#a--user-defined-inputs-1"></a>
+</h4>
 <p>Use the graphs from 2.1 to clip your dataset.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">lat_limits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>     lat_x_min <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>,</span>
-<span>     lat_x_max <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>     lat_y_min <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>     lat_y_max <span class="op">=</span> <span class="fl">1</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">vert_limits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>     vert_x_min <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,</span>
-<span>     vert_x_max <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>     vert_y_min <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>     vert_y_max <span class="op">=</span> <span class="fl">1</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">total_limits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>     total_x_min <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>     total_x_max <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>     total_y_min <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>     total_y_max <span class="op">=</span> <span class="fl">1</span></span>
-<span><span class="op">)</span>  </span></code></pre></div>
-<p><span class="math inline">\(Clipping\)</span> <span class="math inline">\(the\)</span> <span class="math inline">\(data\)</span></p>
+</div>
+<div class="section level4">
+<h4 id="b--clipping-the-data">b. <em>Clipping the data</em><a class="anchor" aria-label="anchor" href="#b--clipping-the-data"></a>
+</h4>
 <p>The following code clips each of the datasets (lateral, vertical,
 total) by the boundaries defined above, and plots the new, clipped
 datasets.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#clip x limits of data</span></span>
 <span><span class="va">backslip_data_clip</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>     backslip_lat <span class="op">=</span> <span class="fu"><a href="../reference/data.clip.html">data.clip</a></span><span class="op">(</span><span class="va">backslip_data</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="st">"lateral"</span>,<span class="va">lat_limits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="va">lat_limits</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
@@ -333,21 +323,17 @@ datasets.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#plot clipped data</span></span>
-<span><span class="fu"><a href="../reference/plotPDF.html">plotPDF</a></span><span class="op">(</span><span class="va">backslip_data_clip</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="st">"lateral"</span>, </span>
-<span>        <span class="va">lat_limits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="va">lat_limits</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>,<span class="va">lat_limits</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>,<span class="va">lat_limits</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span>, simplify <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Removed 11 rows containing non-finite outside the scale range</span></span>
-<span><span class="co">#&gt; (`stat_align()`).</span></span></code></pre></div>
+<span><span class="fu">gridExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html" class="external-link">grid.arrange</a></span><span class="op">(</span></span>
+<span>     <span class="fu"><a href="../reference/plotPDF.html">plotPDF</a></span><span class="op">(</span><span class="va">backslip_data_clip</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="st">"lateral"</span>, </span>
+<span>             <span class="va">lat_limits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="va">lat_limits</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>,<span class="va">lat_limits</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>,<span class="va">lat_limits</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span>, simplify <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span>,</span>
+<span>     <span class="fu"><a href="../reference/plotPDF.html">plotPDF</a></span><span class="op">(</span><span class="va">backslip_data_clip</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>,<span class="st">"vertical"</span>, </span>
+<span>             <span class="va">vert_limits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="va">vert_limits</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>, <span class="va">vert_limits</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>,<span class="va">vert_limits</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span>, simplify <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span>,</span>
+<span>     <span class="fu"><a href="../reference/plotPDF.html">plotPDF</a></span><span class="op">(</span><span class="va">backslip_data_clip</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>,<span class="st">"total"</span>,</span>
+<span>             <span class="va">total_limits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="va">total_limits</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>,<span class="va">total_limits</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>,<span class="va">total_limits</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span>, simplify <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span>,</span>
+<span>                        nrow <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>                        ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="howto_copdr_files/figure-html/clip-functions-1.png" width="700"></p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plotPDF.html">plotPDF</a></span><span class="op">(</span><span class="va">backslip_data_clip</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>,<span class="st">"vertical"</span>, </span>
-<span>        <span class="va">vert_limits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="va">vert_limits</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>, <span class="va">vert_limits</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>,<span class="va">vert_limits</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span>, simplify <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="howto_copdr_files/figure-html/clip-functions-2.png" width="700"></p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plotPDF.html">plotPDF</a></span><span class="op">(</span><span class="va">backslip_data_clip</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>,<span class="st">"total"</span>, </span>
-<span>        <span class="va">total_limits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="va">total_limits</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>,<span class="va">total_limits</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>,<span class="va">total_limits</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span>, simplify <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Removed 10 rows containing non-finite outside the scale range</span></span>
-<span><span class="co">#&gt; (`stat_align()`).</span></span></code></pre></div>
-<p><img src="howto_copdr_files/figure-html/clip-functions-3.png" width="700"></p>
+</div>
 </div>
 <div class="section level3">
 <h3 id="confidence-scaling">3.3 Confidence Scaling<a class="anchor" aria-label="anchor" href="#confidence-scaling"></a>
@@ -367,23 +353,32 @@ accommodate any confidence scale (1 to 3, 1 to 5, 1 to 10, etc). If your
 confidence values are flipped in the reference metadata, such that 1 is
 the lowest confidence value, you will need to invert the values in your
 metadata csv.</p>
-<p>#Developer note to self# Currently, this code is set up to perform
-confidence scaling on the clipped dataset from the previous section, and
-output a Cscaled dataset. In a future version of this code, each of
-these data-filtering and scaling sections will be optional, and be set
-up to perform confidence scaling on the backslip_data, replacing the
-input dataset with the output dataset from each section.</p>
-<p><span class="math inline">\(User-defined\)</span> <span class="math inline">\(inputs\)</span></p>
+<div class="section level5">
+<h5 id="developer-note-to-self">
+<em>Developer note to self:</em><a class="anchor" aria-label="anchor" href="#developer-note-to-self"></a>
+</h5>
+<blockquote>
+<p>Currently, this code is set up to perform confidence scaling on the
+clipped dataset from the previous section, and output a Cscaled dataset.
+In a future version of this code, each of these data-filtering and
+scaling sections will be optional, and be set up to perform confidence
+scaling on the backslip_data, replacing the input dataset with the
+output dataset from each section.</p>
+</blockquote>
+</div>
+<div class="section level4">
+<h4 id="a--user-defined-inputs-2">a. <em>User-defined inputs</em><a class="anchor" aria-label="anchor" href="#a--user-defined-inputs-2"></a>
+</h4>
 <p>Specify which column of the metadata .csv corresponds to the
 confidence rankings, and the total number of offset geomorphic features.
 This N_observations number should be equal to the number of .mat files
 in your input folder_name. The default input dataset has 205 independent
 offset measurements.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">confidence_column</span> <span class="op">=</span> <span class="fl">9</span></span>
-<span><span class="va">N_observations</span> <span class="op">=</span> <span class="fl">205</span></span></code></pre></div>
-<p><span class="math inline">\(Confidence-scaling\)</span> <span class="math inline">\(the\)</span> <span class="math inline">\(data\)</span></p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+</div>
+<div class="section level4">
+<h4 id="b--confidence-scaling-the-data">b. <em>Confidence-scaling the data</em><a class="anchor" aria-label="anchor" href="#b--confidence-scaling-the-data"></a>
+</h4>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#scale the data by confidence values and put in a new Cscale list</span></span>
 <span><span class="va">backslip_data_Cscale</span> <span class="op">&lt;-</span> <span class="va">backslip_data</span></span>
 <span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">{</span></span>
@@ -391,167 +386,184 @@ offset measurements.</p>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="co">#plot confidence-scaled data</span></span>
-<span><span class="fu"><a href="../reference/plotPDF.html">plotPDF</a></span><span class="op">(</span><span class="va">backslip_data_Cscale</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="st">"lateral"</span>, </span>
-<span>        <span class="va">lat_limits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="va">lat_limits</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>,<span class="va">lat_limits</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>,<span class="va">lat_limits</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span>, simplify <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Removed 11 rows containing non-finite outside the scale range</span></span>
-<span><span class="co">#&gt; (`stat_align()`).</span></span></code></pre></div>
-<p><img src="howto_copdr_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plotPDF.html">plotPDF</a></span><span class="op">(</span><span class="va">backslip_data_Cscale</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>,<span class="st">"vertical"</span>, </span>
-<span>        <span class="va">vert_limits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="va">vert_limits</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>, <span class="va">vert_limits</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>,<span class="va">vert_limits</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span>, simplify <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="howto_copdr_files/figure-html/unnamed-chunk-3-2.png" width="700"></p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plotPDF.html">plotPDF</a></span><span class="op">(</span><span class="va">backslip_data_Cscale</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>,<span class="st">"total"</span>, </span>
-<span>        <span class="va">total_limits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="va">total_limits</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>,<span class="va">total_limits</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>,<span class="va">total_limits</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span>, simplify <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Removed 10 rows containing non-finite outside the scale range</span></span>
-<span><span class="co">#&gt; (`stat_align()`).</span></span></code></pre></div>
-<p><img src="howto_copdr_files/figure-html/unnamed-chunk-3-3.png" width="700"></p>
+<span><span class="fu">gridExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html" class="external-link">grid.arrange</a></span><span class="op">(</span></span>
+<span>     <span class="fu"><a href="../reference/plotPDF.html">plotPDF</a></span><span class="op">(</span><span class="va">backslip_data_Cscale</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="st">"lateral"</span>, </span>
+<span>             <span class="va">lat_limits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="va">lat_limits</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>,<span class="va">lat_limits</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>,<span class="va">lat_limits</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span>, simplify <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span>,</span>
+<span>     <span class="fu"><a href="../reference/plotPDF.html">plotPDF</a></span><span class="op">(</span><span class="va">backslip_data_Cscale</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>,<span class="st">"vertical"</span>, </span>
+<span>             <span class="va">vert_limits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="va">vert_limits</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>, <span class="va">vert_limits</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>,<span class="va">vert_limits</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span>, simplify <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span>,</span>
+<span>     <span class="fu"><a href="../reference/plotPDF.html">plotPDF</a></span><span class="op">(</span><span class="va">backslip_data_Cscale</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>,<span class="st">"total"</span>,</span>
+<span>             <span class="va">total_limits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="va">total_limits</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>,<span class="va">total_limits</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>,<span class="va">total_limits</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span>, simplify <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span>,</span>
+<span>                        nrow <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>                        ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<p><img src="howto_copdr_files/figure-html/confidence-scaling-1.png" width="700"></p>
+<hr>
+</div>
 </div>
 <div class="section level3">
 <h3 id="coefficient-of-variation-cov-calculation">3.4 Coefficient of variation (COV) calculation<a class="anchor" aria-label="anchor" href="#coefficient-of-variation-cov-calculation"></a>
 </h3>
 <p>The coefficient of variation (COV) is the ratio of the standard
-deviation to the sample mean for a single PDF and is a statistical
-measure of the relative dispersion of the dataset. This parameter is an
-alternative to standard deviation to measure the relative uncertainty of
-offset geomorphic features. One disadvantage of filtering by COV is that
-if standard deviations are relatively constant across a dataset,
-distributions with smaller means will tend to have larger COVs.
-Therefore, removing PDFs with larger COVs may lessen, or remove
-entirely, peaks at displacement means &lt; 1 m. Generally, standard
-deviation tends to be a more reliable measure of relative uncertainty
-for smaller magnitude offsets, while coefficient of variation tends to
-be a more relable measure of relative uncertainty for larger magnitude
-offsets. In any case, it is useful to have this measurement of
-dispersion in your reference csv.</p>
+deviation (<span class="math inline">\(\sigma\)</span>) to the sample
+mean (<span class="math inline">\(\mu\)</span>) for a single PDF and is
+a statistical measure of the relative dispersion (also called scatter,
+or spread) of the dataset.</p>
+<p><span class="math display">\[COV = \frac{\sigma}{\mu}\]</span></p>
+<p>This parameter is an alternative to standard deviation to measure the
+relative uncertainty of offset geomorphic features. One disadvantage of
+filtering by COV is that if standard deviations are relatively constant
+across a dataset, distributions with smaller means will tend to have
+larger COVs. Therefore, removing PDFs with larger COVs may lessen, or
+remove entirely, peaks at displacement means &lt; 1 m. Generally,
+standard deviation tends to be a more reliable measure of relative
+uncertainty for smaller magnitude offsets, while coefficient of
+variation tends to be a more relable measure of relative uncertainty for
+larger magnitude offsets. In any case, it is useful to have this
+measurement of dispersion in your reference csv.</p>
 <p>The master reference CSV “backslip_csv” should have 4-6 columns for
 displacement statistics including:<br>
-1. lateral mean<br>
-2. lateral standard deviation 3. vertical mean<br>
-4. vertical standard deviation<br>
-5. total mean 6. total standard devation</p>
+- lateral mean<br>
+- lateral standard deviation - vertical mean<br>
+- vertical standard deviation<br>
+- total mean. - total standard devation</p>
 <p>The inputs for this section will need to be the columns of offset
 data. The following code calculates the coefficient of variation, which
 is the standard deviation divided by the mean. I used lateral in my
 example because in the example data, vertical displacement is poorly
 resolved and of very small magnitude.</p>
-<p><span class="math inline">\(User-defined\)</span> <span class="math inline">\(inputs\)</span></p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="section level4">
+<h4 id="user-defined-inputs">
+<em>User-defined inputs</em><a class="anchor" aria-label="anchor" href="#user-defined-inputs"></a>
+</h4>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># these are the column numbers corresponding to this data in the reference csv</span></span>
-<span><span class="va">lat_mean</span> <span class="op">=</span> <span class="fl">13</span></span>
-<span><span class="va">lat_stdev</span> <span class="op">=</span> <span class="fl">14</span></span>
-<span><span class="va">vert_mean</span> <span class="op">=</span> <span class="fl">15</span></span>
-<span><span class="va">vert_stdev</span> <span class="op">=</span> <span class="fl">16</span></span>
-<span><span class="va">total_mean</span> <span class="op">=</span> <span class="fl">17</span></span>
-<span><span class="va">total_stdev</span> <span class="op">=</span> <span class="fl">18</span></span></code></pre></div>
-<p><span class="math inline">\(Calculate\)</span> <span class="math inline">\(COV\)</span> <span class="math inline">\(values\)</span></p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">backslip_csv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc.cov.html">calc.cov</a></span><span class="op">(</span><span class="va">backslip_csv</span>,<span class="st">"lateral"</span>, <span class="va">lat_mean</span>, <span class="va">lat_stdev</span><span class="op">)</span></span>
-<span><span class="va">backslip_csv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc.cov.html">calc.cov</a></span><span class="op">(</span><span class="va">backslip_csv</span>,<span class="st">"vertical"</span>,<span class="va">vert_mean</span>, <span class="va">vert_stdev</span><span class="op">)</span></span>
-<span><span class="va">backslip_csv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc.cov.html">calc.cov</a></span><span class="op">(</span><span class="va">backslip_csv</span>,<span class="st">"total"</span>,<span class="va">total_mean</span>, <span class="va">total_stdev</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">columnNums</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>     lat_mean <span class="op">=</span> <span class="fl">13</span>,</span>
+<span>     lat_stdev <span class="op">=</span> <span class="fl">14</span>,</span>
+<span>     vert_mean <span class="op">=</span> <span class="fl">15</span>,</span>
+<span>     vert_stdev <span class="op">=</span> <span class="fl">16</span>,</span>
+<span>     total_mean <span class="op">=</span> <span class="fl">17</span>,</span>
+<span>     total_stdev <span class="op">=</span> <span class="fl">18</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="calculate-cov-values">
+<em>Calculate COV values</em><a class="anchor" aria-label="anchor" href="#calculate-cov-values"></a>
+</h4>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">backslip_csv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc.cov.html">calc.cov</a></span><span class="op">(</span><span class="va">backslip_csv</span>,<span class="st">"lateral"</span>, <span class="va">columnNums</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">columnNums</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">backslip_csv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc.cov.html">calc.cov</a></span><span class="op">(</span><span class="va">backslip_csv</span>,<span class="st">"vertical"</span>,<span class="va">columnNums</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>, <span class="va">columnNums</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">backslip_csv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc.cov.html">calc.cov</a></span><span class="op">(</span><span class="va">backslip_csv</span>,<span class="st">"total"</span>,<span class="va">columnNums</span><span class="op">[[</span><span class="fl">5</span><span class="op">]</span><span class="op">]</span>, <span class="va">columnNums</span><span class="op">[[</span><span class="fl">6</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<hr>
+</div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="filters">4. Filters<a class="anchor" aria-label="anchor" href="#filters"></a>
 </h2>
 <p>The goal of filtering PDFs prior to summing them together is to find
-clusters of data that would produce the most statistically significant
-peaks, and minimizing the dispersion that could obscure the peaks
-associated with displacement clusters. Past processing to filter these
-datasets included removing PDFs with a high value of dispersion, or
-large standard deviation, prior to COPD summation (Figure 5). However,
-this did not produce statistically significant peaks in the COPD plots,
-and were ultimately difficult to interpret. One problem with removing
-PDFs with larger standard deviations is that this filtering method will
-artificially target larger displacements in older fan surfaces, due to
-the degradation of that geomorphic surface and an increase in
-uncertainty of the offset.</p>
-<ul>
-<li><p>these filters will work to clip master data matrices to include
-only file names</p></li>
-<li><p>that meet a set of criteria</p></li>
-<li><p>users will define these criteria and the code will filter through
-the CSV and data matrices to remove</p></li>
-<li><p>PDFs that do not fit these criteria</p></li>
-<li><p>Each filter will essentially clip the data and produce an output
-of PDFs that can be plotted, which can then be fed into any of the other
-filters</p></li>
-</ul>
+where clusters of data produce the largest, most statistically
+significant peaks. In selecting certain PDFs for COPD analysis, we want
+to minimize the amount of dispersion and uncertainty that could obscure
+the peaks associated earthquake magnitudes. However, we do not want to
+remove enough data that we begin to introduce statistically
+insignificant peaks, such that we over-interpret the number of
+earthquakes. We will tackle the statistical significance part with an
+optimization problem later on in the code.</p>
+<p>As discussed above in section 3.4, there are advantages and
+disadvantages to filtering data through a large COV filter. There are
+also advantages and disadvantages to using only standard deviation
+filters. One problem with removing PDFs with larger standard deviations
+is that this filtering method will produce a bias towards removing
+larger displacements in older fan surfaces, due to the time-degradation
+of that geomorphic surface and an increase in uncertainty of the
+offset.</p>
+<p>Ultimately, it is your job to pick and choose the filters that
+produce the most statistically significant peaks. This section contains
+<em>(it will eventually contain)</em> filters for standard deviation,
+coefficient of variation, geomorphic-age, and piercing point type. Each
+of these filters will work via the following steps:</p>
+<p>-User-defined set of criteria for a single category/column of the
+reference metadata .csv (geomorphic feature, standard deviation, etc)
+-Create a clipped metadata .csv with only the values/characteristics
+indicated by the filter (that meet a set of critera) -Clip the input
+offset matrix to include only filenames in the clipped metadata -Sum
+these PDFs together to create a COPD</p>
 <div class="section level3">
 <h3 id="cov-filters">4.1 COV filters<a class="anchor" aria-label="anchor" href="#cov-filters"></a>
 </h3>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="section level4">
+<h4 id="a--user-defined-inputs-3">a. User-defined inputs<a class="anchor" aria-label="anchor" href="#a--user-defined-inputs-3"></a>
+</h4>
+<p>Specify the threshold values of COV that you want to remove from the
+input matrices.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#these are the COV values you want to filter for</span></span>
-<span><span class="va">COV_filter_vals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">.10</span>,<span class="fl">.30</span>, by<span class="op">=</span><span class="fl">0.05</span><span class="op">)</span> </span>
+<span><span class="va">COV_filter_vals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">.10</span>,<span class="fl">.30</span>, by<span class="op">=</span><span class="fl">0.05</span><span class="op">)</span> </span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="b--filter-pdf-data-by-threshold-cov-values">b. Filter PDF data by threshold COV values<a class="anchor" aria-label="anchor" href="#b--filter-pdf-data-by-threshold-cov-values"></a>
+</h4>
+<p>The following code creates the clipped reference .csv(s) for each of
+the threshold values set above, and then filters the input matrix
+(<strong>note: <em>currently, the Cscaled dataset</em> </strong>) using
+the clipped .csv metadata.</p>
+<p>The code then produces the COPD plots.</p>
+</div>
+<div class="section level4">
+<h4 id="developers-note">
+<em>Developer’s note</em><a class="anchor" aria-label="anchor" href="#developers-note"></a>
+</h4>
+<blockquote>
+<p>This section is very code-heavy and I am in progress of turning this
+into a function. ideally, the user will be able to plot every
+COV-threshold filtered copd on the same figure, so that they can compare
+which filter provides the best results to analyze peaks.</p>
+</blockquote>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">latPlot</span> <span class="op">&lt;-</span> <span class="va">vertPlot</span> <span class="op">&lt;-</span> <span class="va">totPlot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">COV_filter_vals</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span>     <span class="va">latPlot</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plotCOPD.html">plotCOPD</a></span><span class="op">(</span><span class="va">lat_cov2</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>,<span class="st">"lateral"</span>,<span class="va">COV_filter_vals</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="va">lat_limits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">lat_limits</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">COV_filter_vals</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span>     <span class="va">vertPlot</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plotCOPD.html">plotCOPD</a></span><span class="op">(</span><span class="va">vert_cov2</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>,<span class="st">"vertical"</span>,<span class="va">COV_filter_vals</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="va">vert_limits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="va">vert_limits</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
 <span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">COV_filter_vals</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span>     <span class="va">totPlot</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plotCOPD.html">plotCOPD</a></span><span class="op">(</span><span class="va">total_cov2</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>,<span class="st">"total"</span>,<span class="va">COV_filter_vals</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="va">total_limits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="va">total_limits</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
 <span></span>
-<span></span>
-<span><span class="co">## DO NOT EDIT ##</span></span>
-<span><span class="co"># this creates reference data files for the offset_IDs and the corresponding COV values</span></span>
-<span><span class="va">lat_covREF</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/filter_covREF.html">filter_covREF</a></span><span class="op">(</span><span class="va">backslip_csv</span>,<span class="fl">1</span>,<span class="st">"lateral"</span>,<span class="va">COV_filter_vals</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Using one column matrices in `filter()` was deprecated in dplyr 1.1.0.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please use one dimensional logical vectors instead.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">copdr</span> package.</span></span>
-<span><span class="co">#&gt;   Please report the issue to the authors.</span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span>
-<span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> `XY_stdev` -&gt; `XY_stdev...2`</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> `XY_stdev` -&gt; `XY_stdev...3`</span></span>
-<span><span class="va">vert_covREF</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/filter_covREF.html">filter_covREF</a></span><span class="op">(</span><span class="va">backslip_csv</span>,<span class="fl">1</span>,<span class="st">"vertical"</span>,<span class="va">COV_filter_vals</span><span class="op">)</span></span>
-<span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> `Z_stdev` -&gt; `Z_stdev...2`</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> `Z_stdev` -&gt; `Z_stdev...3`</span></span>
-<span><span class="va">total_covREF</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/filter_covREF.html">filter_covREF</a></span><span class="op">(</span><span class="va">backslip_csv</span>,<span class="fl">1</span>,<span class="st">"total"</span>,<span class="va">COV_filter_vals</span><span class="op">)</span></span>
-<span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> `XY_stdev` -&gt; `XY_stdev...2`</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> `XY_stdev` -&gt; `XY_stdev...3`</span></span>
-<span></span>
-<span><span class="co">### this filters the input datatable 'backslip_data' by the filtered COV reference files created using filter.covREF</span></span>
-<span><span class="va">lat_cov2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/filter_covDAT.html">filter_covDAT</a></span><span class="op">(</span><span class="va">backslip_csv</span>,<span class="fl">1</span>,<span class="st">"lateral"</span>,<span class="va">COV_filter_vals</span>,<span class="va">lat_covREF</span>,<span class="va">backslip_data_Cscale</span><span class="op">)</span></span>
-<span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> `` -&gt; `...1`</span></span>
-<span><span class="va">vert_cov2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/filter_covDAT.html">filter_covDAT</a></span><span class="op">(</span><span class="va">backslip_csv</span>,<span class="fl">1</span>,<span class="st">"vertical"</span>,<span class="va">COV_filter_vals</span>,<span class="va">vert_covREF</span>,<span class="va">backslip_data_Cscale</span><span class="op">)</span></span>
-<span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> `` -&gt; `...1`</span></span>
-<span><span class="va">total_cov2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/filter_covDAT.html">filter_covDAT</a></span><span class="op">(</span><span class="va">backslip_csv</span>,<span class="fl">1</span>,<span class="st">"total"</span>,<span class="va">COV_filter_vals</span>,<span class="va">total_covREF</span>,<span class="va">backslip_data_Cscale</span><span class="op">)</span></span>
-<span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> `` -&gt; `...1`</span></span>
-<span><span class="co">########################</span></span>
-<span></span>
-<span><span class="co"># plot confidence-scaled data</span></span>
-<span><span class="fu"><a href="../reference/plotCOPD.html">plotCOPD</a></span><span class="op">(</span><span class="va">lat_cov2</span><span class="op">[[</span><span class="fl">5</span><span class="op">]</span><span class="op">]</span> ,<span class="st">"lateral"</span>, <span class="va">lat_limits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">lat_limits</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<p><img src="howto_copdr_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plotCOPD.html">plotCOPD</a></span><span class="op">(</span><span class="va">vert_cov2</span><span class="op">[[</span><span class="fl">5</span><span class="op">]</span><span class="op">]</span> ,<span class="st">"vertical"</span>, <span class="va">vert_limits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="va">vert_limits</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<p><img src="howto_copdr_files/figure-html/unnamed-chunk-6-2.png" width="700"></p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plotCOPD.html">plotCOPD</a></span><span class="op">(</span><span class="va">total_cov2</span><span class="op">[[</span><span class="fl">5</span><span class="op">]</span><span class="op">]</span> ,<span class="st">"total"</span>, <span class="va">total_limits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="va">total_limits</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<p><img src="howto_copdr_files/figure-html/unnamed-chunk-6-3.png" width="700"></p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">##################</span></span></code></pre></div>
+<span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">COV_filter_vals</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span>     <span class="fu">gridExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html" class="external-link">grid.arrange</a></span><span class="op">(</span><span class="va">latPlot</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p><img src="howto_copdr_files/figure-html/plot-cov-filter-1.png" width="700"><img src="howto_copdr_files/figure-html/plot-cov-filter-2.png" width="700"><img src="howto_copdr_files/figure-html/plot-cov-filter-3.png" width="700"><img src="howto_copdr_files/figure-html/plot-cov-filter-4.png" width="700"><img src="howto_copdr_files/figure-html/plot-cov-filter-5.png" width="700"></p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">COV_filter_vals</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span>     <span class="fu">gridExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html" class="external-link">grid.arrange</a></span><span class="op">(</span><span class="va">vertPlot</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p><img src="howto_copdr_files/figure-html/plot-cov-filter-6.png" width="700"><img src="howto_copdr_files/figure-html/plot-cov-filter-7.png" width="700"><img src="howto_copdr_files/figure-html/plot-cov-filter-8.png" width="700"><img src="howto_copdr_files/figure-html/plot-cov-filter-9.png" width="700"><img src="howto_copdr_files/figure-html/plot-cov-filter-10.png" width="700"></p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">COV_filter_vals</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span>     <span class="fu">gridExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html" class="external-link">grid.arrange</a></span><span class="op">(</span><span class="va">totPlot</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p><img src="howto_copdr_files/figure-html/plot-cov-filter-11.png" width="700"><img src="howto_copdr_files/figure-html/plot-cov-filter-12.png" width="700"><img src="howto_copdr_files/figure-html/plot-cov-filter-13.png" width="700"><img src="howto_copdr_files/figure-html/plot-cov-filter-14.png" width="700"><img src="howto_copdr_files/figure-html/plot-cov-filter-15.png" width="700"></p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co">#plotCOPD(lat_cov2[[5]] ,"lateral", lat_limits[[1]], lat_limits[[2]])</span></span>
+<span><span class="co">#plotCOPD(vert_cov2[[5]] ,"vertical", vert_limits[[1]],vert_limits[[2]])</span></span>
+<span><span class="co">#plotCOPD(total_cov2[[5]] ,"total", total_limits[[1]],total_limits[[2]])</span></span></code></pre></div>
+<p>Which COV filter produces the best peaks, without removing too much
+of the original data?</p>
+</div>
+<div class="section level4">
+<h4 id="developers-note-1">
+<em>Developer’s note</em><a class="anchor" aria-label="anchor" href="#developers-note-1"></a>
+</h4>
+<blockquote>
+<p>I want to add an ‘n = __’ on the graphs, so the user can see how many
+total PDF observations are summed together for each COPD.</p>
+</blockquote>
+</div>
 </div>
 </div>
   </div>

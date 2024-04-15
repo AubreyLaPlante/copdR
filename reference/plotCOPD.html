@@ -54,7 +54,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plotCOPD</span><span class="op">(</span><span class="va">data_table</span>, <span class="va">offset_type</span>, xmin <span class="op">=</span> <span class="op">-</span><span class="fl">10</span>, xmax <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plotCOPD</span><span class="op">(</span><span class="va">data_table</span>, <span class="va">offset_type</span>, <span class="va">maxCOV</span>, xmin <span class="op">=</span> <span class="op">-</span><span class="fl">10</span>, xmax <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -68,6 +68,10 @@ and a 'y' column of summed PDF values</p></dd>
 <dd><p>Input can be "lateral", "vertical" or "total". Any other input
 will result in an error. Also make sure your input offset type corresponds to the
 correct datatable.</p></dd>
+
+
+<dt>maxCOV</dt>
+<dd><p>The threshold COV value. All values larger than the threshold are removed from COPD analysis.</p></dd>
 
 
 <dt>xmin</dt>
