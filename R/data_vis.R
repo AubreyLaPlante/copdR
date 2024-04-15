@@ -147,6 +147,7 @@ plotPDF <- function(data_table, offset_type, xmin = -10, xmax = 10, ymin = -1, y
 #' @param offset_type Input can be "lateral", "vertical" or "total". Any other input
 #' will result in an error. Also make sure your input offset type corresponds to the
 #' correct datatable.
+#' @param maxCOV The threshold COV value. All values larger than the threshold are removed from COPD analysis.
 #' @param xmin The minimum x value. Values can be negative or positive but must be less than xmax.
 #' @param xmax The maximum x value. Values can be negative or positive but must be greater than xmin.
 #' @return A plot produced by ggplot
@@ -156,20 +157,22 @@ plotPDF <- function(data_table, offset_type, xmin = -10, xmax = 10, ymin = -1, y
 #'
 
 
-plotCOPD <- function(data_table, offset_type, xmin = -10, xmax = 10){
+plotCOPD <- function(data_table, offset_type, maxCOV, xmin = -10, xmax = 10){
      if(offset_type == "lateral"){
           plot <- ggplot2::ggplot(mapping = aes(x= data_table$h_x,
                                                 y= data_table$y))+
                stat_align()+
                xlim(xmin,xmax)+
-               labs(title = "Lateral Displacement")
+               labs(title = paste("Lateral Offset COPDs;", "COV <",maxCOV),
+                    x = "Lateral Offset (m)", y = "Cumulative Probability")
      }
      if(offset_type == "vertical"){
           plot <- ggplot2::ggplot(mapping = aes(x=data_table$z_x,
                                                 y = data_table$y))+
                stat_align()+
                xlim(xmin,xmax)+
-               labs(title = "Vertical Displacement")
+               labs(title = paste("Vertical Offset COPDs;", "COV <",maxCOV),
+                    x = "Vertical Offset (m)", y = "Cumulative Probability")
 
      }
      if(offset_type == "total"){
@@ -177,7 +180,8 @@ plotCOPD <- function(data_table, offset_type, xmin = -10, xmax = 10){
                                                 y = data_table$y))+
                stat_align()+
                xlim(xmin,xmax)+
-               labs(title = "Total Displacement")
+               labs(title = paste("Total Offset COPDs;", "COV <",maxCOV),
+                    x = "Total Offset (m)", y = "Cumulative Probability")
      }
      return(plot)
 }

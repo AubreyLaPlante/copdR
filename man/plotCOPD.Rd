@@ -4,7 +4,7 @@
 \alias{plotCOPD}
 \title{Plot summed PDFs}
 \usage{
-plotCOPD(data_table, offset_type, xmin = -10, xmax = 10)
+plotCOPD(data_table, offset_type, maxCOV, xmin = -10, xmax = 10)
 }
 \arguments{
 \item{data_table}{A single table with "h_x", "z_x" or "t_x" values as the first column
@@ -13,6 +13,8 @@ and a 'y' column of summed PDF values}
 \item{offset_type}{Input can be "lateral", "vertical" or "total". Any other input
 will result in an error. Also make sure your input offset type corresponds to the
 correct datatable.}
+
+\item{maxCOV}{The threshold COV value. All values larger than the threshold are removed from COPD analysis.}
 
 \item{xmin}{The minimum x value. Values can be negative or positive but must be less than xmax.}
 
