@@ -1,20 +1,29 @@
 ---
-title: "howto_copdr"
+title: "How to copdr"
+author: "Aubrey LaPlante"
+date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{howto_copdr}
-  %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{How to copdr}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
-  markdown: 
-    wrap: 72
+  %\VignetteEncoding{UTF-8}
 ---
+
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+
+ThemeMain<-ggplot2::theme(legend.position = "none", plot.margin = grid::unit(c(0,0,0, 0), "npc"), 
+                 panel.margin = grid::unit(c(0,0, 0, 0), "npc"), 
+                 title = ggplot2::element_text(size=9, face='bold'),
+                 #axis.text.y = element_blank(), 
+                 axis.text.x = ggplot2::element_text(color='black'),
+                 #axis.ticks.y = element_blank(),
+                 axis.title.x = ggplot2::element_text(size=8,color='black',face='bold')
+                 )
 ```
 
 ```{r setup}
@@ -402,14 +411,14 @@ The code then produces the COPD plots.
 ```{r plot-cov-filter}
 latPlot <- vertPlot <- totPlot <- list()
 for (i in 1:length(COV_filter_vals)){
-     latPlot[[i]] <- plotCOPD(lat_cov2[[i]],"lateral",COV_filter_vals[i], lat_limits[[1]], lat_limits[[2]])
+     latPlot[[i]] <- plotCOPD(lat_cov2[[i]],"lateral",COV_filter_vals[i], lat_limits[[1]], lat_limits[[2]]) + ThemeMain
 }
 for (i in 1:length(COV_filter_vals)){
-     vertPlot[[i]] <- plotCOPD(vert_cov2[[i]],"vertical",COV_filter_vals[i], vert_limits[[1]],vert_limits[[2]])
+     vertPlot[[i]] <- plotCOPD(vert_cov2[[i]],"vertical",COV_filter_vals[i], vert_limits[[1]],vert_limits[[2]]) + ThemeMain
 }
 
 for (i in 1:length(COV_filter_vals)){
-     totPlot[[i]] <- plotCOPD(total_cov2[[i]],"total",COV_filter_vals[i], total_limits[[1]],total_limits[[2]])
+     totPlot[[i]] <- plotCOPD(total_cov2[[i]],"total",COV_filter_vals[i], total_limits[[1]],total_limits[[2]]) + ThemeMain
 }
 
 for(i in 1:length(COV_filter_vals)){
