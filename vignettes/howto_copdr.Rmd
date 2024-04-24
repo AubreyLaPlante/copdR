@@ -183,7 +183,7 @@ This first part of the code does the following:
     or "example.xlsx" in the external data section for how this
     reference metadata should be formatted.
 
-```{r import-data, cache = TRUE, results = 'hide', message=FALSE}
+```{r import-data, results = 'hide', message=FALSE}
 backslip_names <- file2vect(directory, folder_name)
 
 backslip_data <- mat2list(directory,folder_name,backslip_names)
@@ -204,7 +204,7 @@ with a max of 1. With the default dataset, the axes are larger than the
 extent of the data. You should not see any negative probabilities. For
 now, ignore the sign of the lateral and vertical offset magnitudes.
 
-```{r plot-raw, cache = TRUE, message=FALSE}
+```{r plot-raw, message=FALSE}
 plotPDF(backslip_data[[1]],"lateral", simplify = "Y") + ThemeMain
 plotPDF(backslip_data[[2]],"vertical",simplify = "Y") + ThemeMain
 plotPDF(backslip_data[[3]],"total", simplify = "Y") + ThemeMain
@@ -254,7 +254,7 @@ total_limits <- list(
 The following code clips each of the datasets (lateral, vertical, total)
 by the boundaries defined above, and plots the new, clipped datasets.
 
-```{r clip-functions, cache = TRUE, message=FALSE, warning=FALSE}
+```{r clip-functions, message=FALSE, warning=FALSE}
 #clip x limits of data
 backslip_data_clip <- list(
      backslip_lat = data.clip(backslip_data[[1]],"lateral",lat_limits[[1]],lat_limits[[2]]),
@@ -315,7 +315,7 @@ N_observations = 205
 
 ### b. *Confidence-scaling the data*
 
-```{r confidence-scaling, cache = TRUE, message=FALSE, warning=FALSE}
+```{r confidence-scaling, message=FALSE, warning=FALSE}
 #scale the data by confidence values and put in a new Cscale list
 backslip_data_Cscale <- backslip_data
 for(i in 1:3){
