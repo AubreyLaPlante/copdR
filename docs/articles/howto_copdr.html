@@ -52,6 +52,9 @@
 <li>
       <a href="../articles/howto_copdr.html">howto_copdr</a>
     </li>
+    <li>
+      <a href="../articles/intro_to_COPDs.html">intro_to_COPDs</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -80,149 +83,28 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">copdr</span><span class="op">)</span></span></code></pre></div>
+<hr>
 <div class="section level2">
-<h2 id="what-are-copds-and-why-are-they-used-to-analyze-earthquakes">1. What are COPDs and why are they used to analyze earthquakes?<a class="anchor" aria-label="anchor" href="#what-are-copds-and-why-are-they-used-to-analyze-earthquakes"></a>
-</h2>
-<p>First of all, what are cumulative offset probability distribution
-(COPD) functions, and how are they used in earthquake offset analyses?
-In general, when scientists are trying to determine the size of past
-earthquakes, they need to know how much slip occurred in a single
-earthquake. This is because the magnitude of total offset is correlated
-to the moment magnitude/energy released during an earthquake (e.g., the
-Richter Scale). To determine the amount of total offset that occurs
-during earthquakes, we must find linear features that intersect the
-surface trace of a fault, and reconstruct the feature by ‘backslipping’
-or undoing the motion that deformed that originally-linear feature.
-There are fantastic historic examples of roads and fences being split
-apart by earthquakes, but we may also use naturally sub-linear geologic
-features such as glacier moraines, streams, and ridges.</p>
-<p>In Figure 1, a single point bar is right-laterally offset by a single
-fault trace.</p>
-<div class="figure">
-<img src="https://github.com/AubreyLaPlante/external_figs/blob/main/RLoffset.png?raw=true" alt="Figure 1: A right-laterally offset bar in an alluvial fan. Dashed white lines show the bar edges, the red line indicates the fault trace, and yellow arrows show the sense of slip. Panamint Valley, California. Modified from LaPlante (2022)." width="100%"><p class="caption">
-Figure 1: A right-laterally offset bar in an alluvial fan. Dashed white
-lines show the bar edges, the red line indicates the fault trace, and
-yellow arrows show the sense of slip. Panamint Valley, California.
-Modified from LaPlante (2022).
-</p>
-</div>
-<hr>
-<p>Assuming that this was one feature originally, we can measure how
-much one side of the bar moved relative to the other by measuring the
-distance between the southern edge of the western bar segment and the
-southern edge of the eastern bar segment. We can also measure the
-distance between the northern edge of the western bar segment and the
-northern edge of the eastern bar segment. There is also the crest of the
-bar, representing its maximum height at a central E-W axis, that
-provides another lateral offset measurement. As you might imagine, there
-is considerable uncertainty within where these bar edges and crest lines
-are, and this can change the measured lateral offset of this feature,
-depending on scientific interpretations. Confused yet?</p>
-<p>Figure 2 is a graphical representation of a right-laterally offset
-bar, similar to the geomorphic feature shown in Figure 1. What Figure 2d
-shows is that when we estimate the amount of slip on a fault from an
-offset feature by ‘backslipping’ that feature, we get a most-likely
-value (where correlation = 1), bounded by a maximum and a minimum slip
-value (where correlation = 0). This curve approximates a Gaussian
-distribution. The width of this Gaussian distribution, or normal
-probability distribution function (PDF), is related to the uncertainty
-of the offset measurement. We can quantify that uncertainty in a number
-of ways including the standard deviation, the coefficient of variation,
-or confidence scaling. Confidence scaling can vary across different
-scientific studies, and is used to more-strongly weight the more
-sharply-defined piercing points (linear features) when we combine/sum
-multiple PDFs together to create a COPD.</p>
-<div class="figure">
-<img src="https://github.com/AubreyLaPlante/external_figs/blob/main/LaPlante2022_PDFs.png?raw=true" alt="Figure 2: A schematic diagram showing the reconstruction, or 'backslipping', of a point bar. (a) The fault (solid line) and the geomorphic profile of the bar on the western side of the fault (A-A’) and the eastern side of the fault (B-B’). (b) Topographic profiles A-A’ and B-B’ before lateral and vertical shift. (c) Topographic profiles A-A’ and B-B’ after lateral and vertical shift. (d) By mathematically restoring the offset geomorphic marker, a Matlab code generates a lateral shift-correlation plot that predicts a most likely displacement for a piercing point. The vertical offset is found by finding the amount of vertical shift necessary to achieve a correlation coefficient of 1 on the lateral profile shift line. Figure from LaPlante (2022)." width="100%"><p class="caption">
-Figure 2: A schematic diagram showing the reconstruction, or
-‘backslipping’, of a point bar. (a) The fault (solid line) and the
-geomorphic profile of the bar on the western side of the fault (A-A’)
-and the eastern side of the fault (B-B’). (b) Topographic profiles A-A’
-and B-B’ before lateral and vertical shift. (c) Topographic profiles
-A-A’ and B-B’ after lateral and vertical shift. (d) By mathematically
-restoring the offset geomorphic marker, a Matlab code generates a
-lateral shift-correlation plot that predicts a most likely displacement
-for a piercing point. The vertical offset is found by finding the amount
-of vertical shift necessary to achieve a correlation coefficient of 1 on
-the lateral profile shift line. Figure from LaPlante (2022).
-</p>
-</div>
-<hr>
-<p>That finally brings us to COPDs. COPDs are the normal functions, the
-PDFs, summed together for many linear features across the entire length
-of a fault zone. One commonly used example is the well-defined COPD
-plots from the Carrizo Plain segment of the San Andreas fault in
-California, US. Similar to the example shown above, Zielke et al.,
-(2010) illustrates one example of right-lateral offset of a single
-drainage. In this example, the PDF peak occurs at around 5 m, with an
-uncertainty of ± ~0.6 - 0.7 m.</p>
-<div class="figure">
-<img src="https://github.com/AubreyLaPlante/external_figs/blob/main/Zielke2010_channels.png?raw=true" alt="Figure 3: A single offset displacement marker from the Carrizo segment of the San Andreas fault, in southern California. (a) The aerial view of the offset channel from a digital elevation model. (b) Red and blue cross sections of the offset channel, parallel to the fault plane. (c) The resulting right-lateral offset PDF for this channel. Figure from Zielke et al., (2010)." width="100%"><p class="caption">
-Figure 3: A single offset displacement marker from the Carrizo segment
-of the San Andreas fault, in southern California. (a) The aerial view of
-the offset channel from a digital elevation model. (b) Red and blue
-cross sections of the offset channel, parallel to the fault plane. (c)
-The resulting right-lateral offset PDF for this channel. Figure from
-Zielke et al., (2010).
-</p>
-</div>
-<hr>
-<p>Zielke et al., (2010), combines dozens of PDFs along this segment of
-the San Andreas fault. This combined/summed PDF plot (Figure 4b) is the
-cumulative offset probability distribution (COPD) function. Each of
-these individual PDFs have different local offset maxima because each
-offset marker records a different number of earthquakes. This is
-consistent with what we would expect, such that the oldest geomorphic
-features have been displaced by many earthquakes, while the youngest
-generations of Holocene alluvium may have only experienced the most
-recent earthquake. Assuming that earthquakes on the southern San Andreas
-fault are perfectly elastic, we would also expect to see regular PDF
-peak spacing from subsequent earthquakes producing the same total
-magnitudes of slip.</p>
-<div class="figure">
-<img src="https://github.com/AubreyLaPlante/external_figs/blob/main/Zielke2010_carrizo.png?raw=true" alt="Figure 4: Individual PDFs from a ~50 km extent of the Carrizo fault segment of the southern San Andreas fault. All PDFs are summed together to create a COPD plot, which is useful in interpreting the magnitude of total slip in past earthquakes. (a) Individual PDFs are plotted in space, with distance from north to south on the X axis and total offset magnitude on the Y axis. PDFs are colored by average slip magnitude, with orange representing the clustering of the least amount of slip and light blue representing the clustering of the largest magnitude of slip. (b) All PDFs are summed together to isolate clusters of total offset magnitudes. Theoretically, each peak represents the displacement associated with a different number of earthquakes, assuming that each earthquake produced the same magnitude of slip. Therefore, orange curves represent one earthquake, purple curves represent two earthquakes, yellow represents three earthquakes, etc. Figure from Zielke et al., (2010)." width="100%"><p class="caption">
-Figure 4: Individual PDFs from a ~50 km extent of the Carrizo fault
-segment of the southern San Andreas fault. All PDFs are summed together
-to create a COPD plot, which is useful in interpreting the magnitude of
-total slip in past earthquakes. (a) Individual PDFs are plotted in
-space, with distance from north to south on the X axis and total offset
-magnitude on the Y axis. PDFs are colored by average slip magnitude,
-with orange representing the clustering of the least amount of slip and
-light blue representing the clustering of the largest magnitude of slip.
-(b) All PDFs are summed together to isolate clusters of total offset
-magnitudes. Theoretically, each peak represents the displacement
-associated with a different number of earthquakes, assuming that each
-earthquake produced the same magnitude of slip. Therefore, orange curves
-represent one earthquake, purple curves represent two earthquakes,
-yellow represents three earthquakes, etc. Figure from Zielke et al.,
-(2010).
-</p>
-</div>
-<hr>
-<p>In Figure 4b, we see peaks in the COPD plot of 5m, 10m, 15m, and so
-on. This is useful, and consistent with our assumptions. It appears that
-each earthquake on the Carrizo segment produces about ~5m of
-right-lateral strike slip motion. Using this number for average
-displacement we can use scaling relationships (Wells and Coppersmith,
-1994) to determine that this amount of average displacement corresponds
-to a rupture length of ~136 km and an earthquake magnitude of Mw ~7.7.
-COPDs can be really useful to estimate future seismic hazards!</p>
-<hr>
-</div>
-<div class="section level2">
-<h2 id="introduction-to-cumulative-offset-probability-distribution-functions-in-r-copdr">2. Introduction to Cumulative Offset Probability Distribution
+<h2 id="introduction-to-cumulative-offset-probability-distribution-functions-in-r-copdr">1. Introduction to Cumulative-Offset Probability Distribution
 functions in R (copdr)<a class="anchor" aria-label="anchor" href="#introduction-to-cumulative-offset-probability-distribution-functions-in-r-copdr"></a>
 </h2>
-<p>This code is meant to import probability distribution functions
-(PDFs), i.e. Gaussian curves, and combine them in a modicum of ways for
-the user, based on several filters to remove the noisy PDFs or PDFs with
-high uncertainties (i.e. large standard deviations, high coefficient of
-variation, etc). These PDFs are produced from LaDiCaoz, a Matlab program
-that allows you to ‘backslip’ offset on a fault from digital elevation
-models (DEMs) or digital surface models (DSMs). It is a lot of acronyms,
-but stay with me.</p>
+<p>This workflow is meant to import probability distribution functions
+(PDFs) that were generated through the Matlab code LaDiCaoz. LaDiCaoz, a
+Matlab program that allows you to ‘backslip’ offset on a fault from
+digital elevation models (DEMs) or digital surface models (DSMs). It is
+a lot of acronyms, but stay with me. Each PDF is a normal distribution,
+or Gaussian distribution that represents one offset measurement on a
+fault. The first part of this workflow works to import and tidy up these
+data so that the user can visualize that all their data is plotting
+correctly on uniform axes. The second part of this workflow has a series
+of filters that will take the observations/metadata associated with each
+PDF (such as unit age, type of offset, standard deviation, uncertainty,
+etc) and sum the PDFs together. The goal of these filters is to remove
+the noisy PDFs or PDFs with high uncertainties (i.e. large standard
+deviations, high coefficient of variation, etc) so that clear peaks and
+trends in the data can be identified.</p>
 <div class="section level3">
-<h3 id="load-in-data">2.1 Load in data<a class="anchor" aria-label="anchor" href="#load-in-data"></a>
+<h3 id="load-in-data">1.1 Load in data<a class="anchor" aria-label="anchor" href="#load-in-data"></a>
 </h3>
 <p>First, you need to make sure that the full PDF dataset and its
 metadata CSV is in a folder in your working directory. The default
@@ -275,18 +157,23 @@ metadata should be formatted.</li>
 </div>
 </div>
 <div class="section level2">
-<h2 id="data-pre-processing">3. Data pre-processing<a class="anchor" aria-label="anchor" href="#data-pre-processing"></a>
+<h2 id="data-pre-processing">2. Data pre-processing<a class="anchor" aria-label="anchor" href="#data-pre-processing"></a>
 </h2>
 <div class="section level3">
-<h3 id="visualize-the-raw-data">3.1. Visualize the raw data<a class="anchor" aria-label="anchor" href="#visualize-the-raw-data"></a>
+<h3 id="visualize-the-raw-data">2.1. Visualize the raw data<a class="anchor" aria-label="anchor" href="#visualize-the-raw-data"></a>
 </h3>
 <p>This code plots all the PDFs data on a default coordinate axis, to
 check that the data loaded in correctly. This is NOT the COPD plot yet,
 as we have not summed the PDFs together, so the Y-axis is still
 probability with a max of 1. With the default dataset, the axes are
 larger than the extent of the data. You should not see any negative
-probabilities. For now, ignore the sign of the lateral and vertical
-offset magnitudes.</p>
+probabilities where the data plot in the negative Y domain. For the
+lateral PDFs, negative values correspond to right-lateral motion and
+positive values correspond to left-lateral motion. For the vertical
+PDFs, negative values correspond to extensional motion (down-dropping)
+and positive values correspond to compressional motion (thrusting). In
+the total offset PDF plot, these signs are ignored to calculate a total
+magnitude of displacement for each offset measurement.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotPDF.html">plotPDF</a></span><span class="op">(</span><span class="va">backslip_data</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="st">"lateral"</span>, simplify <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span> <span class="op">+</span> <span class="va">ThemeMain</span></span></code></pre></div>
 <p><img src="howto_copdr_files/figure-html/plot-raw-1.png" width="700"></p>
@@ -298,21 +185,21 @@ offset magnitudes.</p>
 <p><img src="howto_copdr_files/figure-html/plot-raw-3.png" width="700"></p>
 </div>
 <div class="section level3">
-<h3 id="clip-raw-data-and-plot">3.2 Clip raw data and plot<a class="anchor" aria-label="anchor" href="#clip-raw-data-and-plot"></a>
+<h3 id="clip-raw-data-and-plot">2.2 Clip raw data and plot<a class="anchor" aria-label="anchor" href="#clip-raw-data-and-plot"></a>
 </h3>
 <p>Sometimes we may have datasets that are larger than the extent that
 we would like to analyze. For example, in some cases we may only want to
 look at small values of displacement, so we would need to clip out any
 data that is larger than a threshold value. With the default dataset,
 there are extra zeros on either side of each PDF curve, beyond the
-maximum and minimum values. These extra zeros are unnecessary and may
-make it difficult when combining the datasets, if each PDF has different
-lengths of probability vectors. So, we will uniformly clip the PDFs to
-remove anything unnecessary for future analysis.</p>
+maximum and minimum values. These extra zeros are unnecessary, and may
+make it difficult when combining the datasets if each PDF has a
+different length probability vector. So, we will uniformly clip the PDFs
+to remove anything unnecessary for future analysis.</p>
 <div class="section level4">
 <h4 id="a--user-defined-inputs-1">a. <em>User-defined inputs</em><a class="anchor" aria-label="anchor" href="#a--user-defined-inputs-1"></a>
 </h4>
-<p>Use the graphs from 2.1 to clip your dataset.</p>
+<p>Use the graphs from 1.1 to clip your dataset.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lat_limits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>     lat_x_min <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>,</span>
@@ -364,18 +251,18 @@ datasets.</p>
 </div>
 </div>
 <div class="section level3">
-<h3 id="confidence-scaling">3.3 Confidence Scaling<a class="anchor" aria-label="anchor" href="#confidence-scaling"></a>
+<h3 id="confidence-scaling">2.3 Confidence Scaling<a class="anchor" aria-label="anchor" href="#confidence-scaling"></a>
 </h3>
-<p>This code scales each PDF by a confidence value. These confidence
-values are specific to the dataset, where 1 is the maximum confidence
-and your largest value is the lowest confidence. Confidence scales vary
-widely, but are generally a study-specific ranking involving many
+<p>This code scales each PDF by a confidence value. Confidence scales
+vary widely, but are generally a study-specific ranking involving many
 qualitative evaluations of how likely an offset geomorphic feature is
 representative of an accurate and precise earthquake displacement value.
 This may involve a relative ranking of how degraded a geomorphic feature
 is, the angle that it intersects a fault trace (higher angles are
 better), or whether there appears to be post-earthquake modification by
-streams or human activity.</p>
+streams or human activity. These confidence values are specific to the
+dataset, where 1 is the maximum confidence and your largest value is the
+lowest confidence.</p>
 <p>In this dataset, 3 is the lowest confidence. The code is set up to
 accommodate any confidence scale (1 to 3, 1 to 5, 1 to 10, etc). If your
 confidence values are flipped in the reference metadata, such that 1 is
@@ -432,7 +319,7 @@ offset measurements.</p>
 </div>
 </div>
 <div class="section level3">
-<h3 id="coefficient-of-variation-cov-calculation">3.4 Coefficient of variation (COV) calculation<a class="anchor" aria-label="anchor" href="#coefficient-of-variation-cov-calculation"></a>
+<h3 id="coefficient-of-variation-cov-calculation">2.4 Coefficient of variation (COV) calculation<a class="anchor" aria-label="anchor" href="#coefficient-of-variation-cov-calculation"></a>
 </h3>
 <p>The coefficient of variation (COV) is the ratio of the standard
 deviation (<span class="math inline">\(\sigma\)</span>) to the sample
@@ -454,7 +341,8 @@ measurement of dispersion in your reference csv.</p>
 <p>The master reference CSV “backslip_csv” should have 4-6 columns for
 displacement statistics including:<br>
 - lateral mean<br>
-- lateral standard deviation - vertical mean<br>
+- lateral standard deviation<br>
+- vertical mean<br>
 - vertical standard deviation<br>
 - total mean<br>
 - total standard devation<br></p>
@@ -490,7 +378,7 @@ resolved and of very small magnitude.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="filters">4. Filters<a class="anchor" aria-label="anchor" href="#filters"></a>
+<h2 id="filters">3. Filters<a class="anchor" aria-label="anchor" href="#filters"></a>
 </h2>
 <p>The goal of filtering PDFs prior to summing them together is to find
 where clusters of data produce the largest, most statistically
@@ -501,7 +389,7 @@ remove enough data that we begin to introduce statistically
 insignificant peaks, such that we over-interpret the number of
 earthquakes. We will tackle the statistical significance part with an
 optimization problem later on in the code.</p>
-<p>As discussed above in section 3.4, there are advantages and
+<p>As discussed above in section 2.4, there are advantages and
 disadvantages to filtering data through a large COV filter. There are
 also advantages and disadvantages to using only standard deviation
 filters. One problem with removing PDFs with larger standard deviations
