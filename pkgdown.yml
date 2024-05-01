@@ -3,5 +3,6 @@ pkgdown: 2.0.9
 pkgdown_sha: ~
 articles:
   howto_copdr: howto_copdr.html
-last_built: 2024-04-24T18:34Z
+  intro_to_COPDs: intro_to_COPDs.html
+last_built: 2024-05-01T17:19Z
 
